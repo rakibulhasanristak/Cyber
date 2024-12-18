@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CryptX Pro - Secure encryption and password management tools">
+    <title>CryptX Pro - Home</title>
+    <style>
+       /* Root variables for better maintainability */
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #333;
+    --text-color-light: white;
+    --text-color-dark: #333;
+    --background-light: #f4f4f9;
+    --background-dark: #222;
+}
+
+/* General reset and box-sizing fix */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Prevent horizontal scrollbars */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-light);
+}
+
+/* Fixed Navigation Bar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--secondary-color);
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0; /* Align nav to the left edge */
+    right: 0; /* Align nav to the right edge */
+    z-index: 1000;
+}
+
+/* Logo in the navigation bar */
+nav .logo a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Navigation links */
+nav .nav-links {
+    display: flex;
+}
+
+nav .nav-links a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+nav .nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--background-dark);
+    color: var(--text-color-light);
+    text-align: center;
+    padding-top: 60px; /* Adjust to account for fixed nav */
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    padding: 15px 30px;
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.cta-button:hover {
+    background-color: #45a049; /* Slightly darker green */
+}
+
+/* Features Section */
+.features {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: var(--background-light);
+}
+
+.features h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.feature {
+    margin: 20px 0;
+}
+
+.feature h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 16px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+
+    nav .nav-links {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    nav .nav-links a {
+        margin: 10px 0;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    .features h2 {
+        font-size: 28px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">
+            <a href="index.html">CryptX Pro</a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" aria-label="Home">Home</a>
+            <a href="password.html" aria-label="Password Strength Checker">Password Strength Checker</a>
+            <a href="cipher.html" aria-label="Cipher Tool">Cipher Tool</a>
+            <a href="about.html" aria-label="About Us">About Us</a>
+            <a href="contact.html" aria-label="Contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <h1>Welcome to CryptX Pro</h1>
+        <p>Your go-to tool for secure encryption and password management.</p>
+        <a href="password.html" class="cta-button">Get Started</a>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Features</h2>
+        <div class="feature">
+            <h3>Password Strength Checker</h3>
+            <p>Check the strength of your passwords and ensure they are secure.</p>
+        </div>
+        <div class="feature">
+            <h3>Cipher Tool</h3>
+            <p>Encrypt and decrypt messages using various cipher techniques.</p>
+        </div>
+        <div class="feature">
+            <h3>User-Friendly Interface</h3>
+            <p>Easy to use with a clean and intuitive design.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 20px; background-color: var(--secondary-color); color: var(--text-color-light);">
+        <p>&copy; <span id="year"></span> CryptX Pro. All Rights Reserved.</p>
+    </footer>
+
+   
+</body>
+</html>

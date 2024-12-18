@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptX Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav style="width: 100%; background-color: #333; padding: 10px 0; position: fixed; top: 0; left: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <!-- Logo/Brand -->
+        <div style="padding-left: 20px; font-size: 22px; color: white; font-weight: bold;">
+            <a href="index.html" style="color: white; text-decoration: none;">CryptX Pro</a>
+        </div>
+        
+        <!-- Navigation Links -->
+        <div style="display: flex; align-items: center; gap: 20px; margin-right: 20px;">
+            <a href="index.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Home</a>
+            <a href="password.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Password Strength Checker</a>
+            <a href="cipher.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Cipher Tool</a>
+            <a href="about.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">About Us</a>
+            <a href="contact.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Contact</a>
+        </div>
+    
+        <!-- Theme Toggle -->
+        <div style="padding-right: 20px;">
+            <button onclick="toggleTheme()" style="padding: 10px 15px; font-size: 16px; background-color: white; color: #333; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s;">Dark Mode</button>
+        </div>
+    </nav>
+
+    <!-- Adjust body padding to account for fixed navbar -->
+    <div style="padding-top: 60px;">
+        
+        <div class="container">
+            <h1>Cipher Tool</h1>
+            <textarea id="text-input" placeholder="Enter text here"></textarea>
+            <select id="cipher-select">
+                <option value="caesar">Caesar Cipher</option>
+                <option value="railfence">Rail Fence Cipher</option>
+                <option value="playfair">Playfair Cipher</option>
+                <option value="vigenere">Vigenère Cipher</option>
+                <option value="affine">Affine Cipher</option>
+            </select>
+            <input id="key-input" type="text" placeholder="Enter key">
+            <button onclick="encryptText()">Encrypt</button>
+            <button onclick="decryptText()">Decrypt</button>
+            <p class="output" id="text-output"></p>
+        </div>
+    </div>
+
+
+
+    <script>
+         function toggleTheme() {
+        const body = document.body;
+        const isDark = body.style.backgroundColor === 'black';
+
+        if (isDark) {
+            body.style.backgroundColor = 'white';
+            body.style.color = 'black';
+        } else {
+            body.style.backgroundColor = 'black';
+            body.style.color = 'white';
+        }
+
+        const buttons = document.querySelectorAll('nav button');
+        buttons.forEach(button => {
+            button.style.backgroundColor = isDark ? 'white' : '#333';
+            button.style.color = isDark ? '#333' : 'white';
+        });
+    }
+        // Caesar Cipher
+        function caesarCipher(text, shift) {
+            return text.split("").map(char => {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = char === char.toLowerCase() ? 97 : 65;
+                    return String.fromCharCode(((code - base + shift) % 26 + 26) % 26 + base);
+                }
+                return char;
+            }).join("");
+        }
+
+        // Rail Fence Cipher
+        function railFenceCipher(text, key) {
+            const rails = Array.from({ length: key }, () => []);
+            let row = 0, direction = 1;
+            for (const char of text) {
+                rails[row].push(char);
+                row += direction;
+                if (row === 0 || row === key - 1) direction *= -1;
+            }
+            return rails.flat().join("");
+        }
+
+        // Rail Fence Decrypt
+        function railFenceCipherDecrypt(text, key) {
+            const rails = Array.from({ length: key }, () => []);
+            const template = Array.from({ length: text.length }, () => null);
+            let row = 0, direction = 1;
+
+            // Create the template for the pattern of the text
+            for (let i = 0; i < text.length; i++) {
+                template[i] = row;
+                row += direction;
+                if (row === 0 || row === key - 1) direction *= -1;
+            }
+
+            // Fill the rails with the characters from the encrypted text
+            let charIndex = 0;
+            for (let i = 0; i < key; i++) {
+                for (let j = 0; j < text.length; j++) {
+                    if (template[j] === i) {
+                        rails[i].push(text[charIndex++]);
+                    }
+                }
+            }
+
+            // Rebuild the decrypted text
+            let result = '';
+            row = 0; direction = 1;
+            for (let i = 0; i < text.length; i++) {
+                result += rails[row].shift(); // Get the next character from the corresponding row
+                row += direction;
+                if (row === 0 || row === key - 1) direction *= -1;
+            }
+            return result;
+        }
+
+        // Helper: Generate Playfair Matrix
+        function generatePlayfairMatrix(key) {
+            const alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ"; // 'I' and 'J' combined
+            const cleanedKey = key.toUpperCase().replace(/J/g, "I").replace(/[^A-Z]/g, ""); // Remove invalid chars
+            const uniqueKey = [...new Set(cleanedKey + alphabet)]; // Remove duplicates
+            const matrix = [];
+            for (let i = 0; i < 25; i += 5) {
+                matrix.push(uniqueKey.slice(i, i + 5));
+            }
+            return matrix;
+        }
+
+        // Helper: Find position of a letter in the Playfair matrix
+        function findInMatrix(matrix, char) {
+            for (let row = 0; row < 5; row++) {
+                for (let col = 0; col < 5; col++) {
+                    if (matrix[row][col] === char) return { row, col };
+                }
+            }
+            return null;
+        }
+
+        // Helper: Prepare text for Playfair Cipher (split into digraphs)
+        function preparePlayfairText(text) {
+            const cleanedText = text.toUpperCase().replace(/J/g, "I").replace(/[^A-Z]/g, "");
+            const digraphs = [];
+            for (let i = 0; i < cleanedText.length; i += 2) {
+                const a = cleanedText[i];
+                const b = cleanedText[i + 1] || "X";
+                if (a === b) {
+                    digraphs.push(a + "X");
+                    i--; // Recheck the same character
+                } else {
+                    digraphs.push(a + b);
+                }
+            }
+            return digraphs;
+        }
+
+        // Playfair Cipher: Encrypt
+        function playfairCipherEncrypt(text, key) {
+            const matrix = generatePlayfairMatrix(key);
+            const digraphs = preparePlayfairText(text);
+            const encryptedText = digraphs.map(pair => {
+                const aPos = findInMatrix(matrix, pair[0]);
+                const bPos = findInMatrix(matrix, pair[1]);
+                if (aPos.row === bPos.row) {
+                    return matrix[aPos.row][(aPos.col + 1) % 5] + matrix[bPos.row][(bPos.col + 1) % 5];
+                } else if (aPos.col === bPos.col) {
+                    return matrix[(aPos.row + 1) % 5][aPos.col] + matrix[(bPos.row + 1) % 5][bPos.col];
+                } else {
+                    return matrix[aPos.row][bPos.col] + matrix[bPos.row][aPos.col];
+                }
+            });
+            return encryptedText.join("");
+        }
+
+        // Playfair Cipher: Decrypt
+        function playfairCipherDecrypt(text, key) {
+            const matrix = generatePlayfairMatrix(key);
+            const digraphs = preparePlayfairText(text);
+            const decryptedText = digraphs.map(pair => {
+                const aPos = findInMatrix(matrix, pair[0]);
+                const bPos = findInMatrix(matrix, pair[1]);
+                if (aPos.row === bPos.row) {
+                    return matrix[aPos.row][(aPos.col + 4) % 5] + matrix[bPos.row][(bPos.col + 4) % 5];
+                } else if (aPos.col === bPos.col) {
+                    return matrix[(aPos.row + 4) % 5][aPos.col] + matrix[(bPos.row + 4) % 5][bPos.col];
+                } else {
+                    return matrix[aPos.row][bPos.col] + matrix[bPos.row][aPos.col];
+                }
+            });
+            return decryptedText.join("");
+        }
+
+        // Vigenère Cipher
+        function vigenereCipherEncrypt(text, key) {
+            const expandedKey = key.repeat(Math.ceil(text.length / key.length)).slice(0, text.length);
+            return text.split("").map((char, i) => {
+                if (char.match(/[a-z]/i)) {
+                    const shift = expandedKey.charCodeAt(i) - 97;
+                    return caesarCipher(char, shift);
+                }
+                return char;
+            }).join("");
+        }
+
+        function vigenereCipherDecrypt(text, key) {
+            const expandedKey = key.repeat(Math.ceil(text.length / key.length)).slice(0, text.length);
+            return text.split("").map((char, i) => {
+                if (char.match(/[a-z]/i)) {
+                    const shift = -(expandedKey.charCodeAt(i) - 97);
+                    return caesarCipher(char, shift);
+                }
+                return char;
+            }).join("");
+        }
+
+        // Affine Cipher
+        function affineCipherEncrypt(text, a, b) {
+    return text.split("").map(char => {
+        if (char.match(/[a-z]/i)) {
+            const code = char.toLowerCase().charCodeAt(0) - 97;
+            return String.fromCharCode(((a * code + b) % 26 + 26) % 26 + 97);
+        }
+        return char;
+    }).join("");
+}
+
+function affineCipherDecrypt(text, a, b) {
+    const modInverse = (a, m = 26) => {
+        for (let i = 1; i < m; i++) if ((a * i) % m === 1) return i;
+        throw new Error("No modular inverse found. Ensure 'a' is coprime with 26.");
+    };
+
+    // Validate the key
+    if (a <= 0 || b <= 0 || a >= 26 || b >= 26) {
+        throw new Error("The values of 'a' and 'b' should be positive integers less than 26.");
+    }
+
+    const aInv = modInverse(a);
+    return text.split("").map(char => {
+        if (char.match(/[a-z]/i)) {
+            const code = char.toLowerCase().charCodeAt(0) - 97;
+            return String.fromCharCode(((aInv * (code - b)) % 26 + 26) % 26 + 97);
+        }
+        return char;
+    }).join("");
+}
+// Encrypt Handler
+function encryptText() {
+    const input = document.getElementById("text-input").value.trim();
+    const cipher = document.getElementById("cipher-select").value;
+    const key = document.getElementById("key-input").value.trim();
+    let encrypted;
+
+    if (!input) return alert("Please provide text to encrypt.");
+    if (["playfair", "vigenere", "affine"].includes(cipher) && !key) {
+        return alert("Please provide a valid key for this cipher.");
+    }
+
+    try {
+        switch (cipher) {
+            case "caesar":
+                encrypted = caesarCipher(input, parseInt(key));
+                break;
+            case "railfence":
+                encrypted = railFenceCipher(input, parseInt(key));
+                break;
+            case "playfair":
+                encrypted = playfairCipherEncrypt(input, key);
+                break;
+            case "vigenere":
+                encrypted = vigenereCipherEncrypt(input, key.toLowerCase());
+                break;
+            case "affine":
+                const [a, b] = key.split(",").map(Number);
+                encrypted = affineCipherEncrypt(input, a, b);
+                break;
+            default:
+                throw new Error("Unknown cipher");
+        }
+
+        document.getElementById("text-output").innerText = `Encrypted: ${encrypted}`;
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+// Decrypt Handler
+function decryptText() {
+    const input = document.getElementById("text-input").value.trim();
+    const cipher = document.getElementById("cipher-select").value;
+    const key = document.getElementById("key-input").value.trim();
+    let decrypted;
+
+    if (!input) return alert("Please provide text to decrypt.");
+    if (["playfair", "vigenere", "affine"].includes(cipher) && !key) {
+        return alert("Please provide a valid key for this cipher.");
+    }
+
+    try {
+        switch (cipher) {
+            case "caesar":
+                decrypted = caesarCipher(input, -parseInt(key));
+                break;
+            case "railfence":
+                decrypted = railFenceCipherDecrypt(input, parseInt(key));
+                break;
+            case "playfair":
+                decrypted = playfairCipherDecrypt(input, key);
+                break;
+            case "vigenere":
+                decrypted = vigenereCipherDecrypt(input, key.toLowerCase());
+                break;
+            case "affine":
+                const [a, b] = key.split(",").map(Number);
+                decrypted = affineCipherDecrypt(input, a, b);
+                break;
+            default:
+                throw new Error("Unknown cipher");
+        }
+
+        document.getElementById("text-output").innerText = `Decrypted: ${decrypted}`;
+    } catch (err) {
+        alert(err.message);
+    }
+}
+
+    </script>
+</body>
+
+</html>

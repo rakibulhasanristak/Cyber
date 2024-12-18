@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - CryptX Pro</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #222;
+            color: #ddd;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            width: 1000px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #18e605;
+            font-size: 28px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .team-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .member {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            width: 30%;
+        }
+
+        .member img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .member-details {
+            text-align: center;
+        }
+
+        .member-details h3 {
+            margin: 0;
+            color: #18e605;
+            font-size: 20px;
+        }
+
+        .member-details p {
+            margin: 5px 0;
+            color: #ccc;
+            font-size: 14px;
+        }
+        /* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+}
+
+footer p {
+    margin: 0;
+}
+    </style>
+</head>
+<body>
+    <nav style="width: 100%; background-color: #333; padding: 10px 0; position: fixed; top: 0; left: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <!-- Logo/Brand -->
+        <div style="padding-left: 20px; font-size: 22px; color: white; font-weight: bold;">
+            <a href="index.html" style="color: white; text-decoration: none;">CryptX Pro</a>
+        </div>
+        
+        <!-- Navigation Links -->
+        <div style="display: flex; align-items: center; gap: 20px; margin-right: 20px;">
+            <a href="index.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Home</a>
+            <a href="password.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Password Strength Checker</a>
+            <a href="cipher.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Cipher Tool</a>
+            <a href="about.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">About Us</a>
+            <a href="contact.html" style="color: white; text-decoration: none; font-size: 18px; padding: 10px 15px; transition: background-color 0.3s, color 0.3s; border-radius: 5px;">Contact</a>
+        </div>
+    
+        <!-- Theme Toggle -->
+        <div style="padding-right: 20px;">
+            <button onclick="toggleTheme()" style="padding: 10px 15px; font-size: 16px; background-color: white; color: #333; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s;">Dark Mode</button>
+        </div>
+    </nav>
+
+    <!-- Adjust body padding to account for fixed navbar -->
+    <div style="padding-top: 60px;">
+        
+    <div class="container">
+        <h1>Meet Our Team</h1>
+
+        <!-- Team Member Cards -->
+        <div class="team-container">
+            <!-- Team Member 1 -->
+            <div class="member">
+                <img src="Member 1.png" alt="Member 1">
+                <div class="member-details">
+                    <h3>S.N. Fariha Zannat</h3>
+                    <p>ID: 221002474</p>
+                    <p>Department Of CSE</p>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="member">
+                <img src="Member 2.png" alt="Member 2">
+                <div class="member-details">
+                    <h3>Md. Rakibul Hasan</h3>
+                    <p>ID: 221002611</p>
+                    <p>Department Of CSE</p>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="member">
+                <img src="Member 3.jpg" alt="Member 3">
+                <div class="member-details">
+                    <h3>Shihab Hasan</h3>
+                    <p>ID: 221002110</p>
+                    <p>Department Of CSE</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+ <!-- Footer -->
+ <footer style="text-align: center; padding: 20px; background-color: var(--secondary-color); color: var(--text-color-light);">
+    <p>&copy; <span id="year"></span> CryptX Pro. All Rights Reserved.</p>
+</footer>
+</html>
